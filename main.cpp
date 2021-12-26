@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <cstdlib>
 #include "csv_editor.hpp"
@@ -17,10 +16,10 @@ int start_menu (){
 
 void clear_screen() // Used to clear screen on windows and linux
 {
-  #ifdef WINDOWS
-      system("cls");
+  #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)      
+  system("cls");
   #else
-      system ("clear");
+  system("clear");
   #endif
 }
 int main(){
@@ -35,10 +34,16 @@ int main(){
         cout << "\nEnter the file location for the csv :" << endl;
         cin.ignore(); 
         getline(cin, filename);
-        cout << "here";
-        sheet* A = parser.open_file(filename);
-        handler->insert_sheet(A);
-        A->display_sheet();
+        if (parser.does_file_exist(filename))
+        {
+          sheet* A = parser.open_file(filename);
+
+          handler->insert_sheet(A);
+          A->display_sheet();
+        }
+        else
+          cout << "Error: FIle doesnt exist\n";
+
       }
       catch (...){
         cout << "Error: FIle doesnt exist\n";
@@ -48,16 +53,33 @@ int main(){
       cin >> a; // To stop the execution
     }
     else if (choice == 2){
-      int success = handler->display_available_sheets();
+      int success = 0;
+      dictionary <int,string> dict =handler->get_available_sheets();
+      if (dict.size > 0)
+        success = 1;
       if (success == 1) {
         string choice;
-        cout << "Please type the name for the sheet to choose." << endl;
+        string name;
+        cout << "Please type the number for the sheet to choose." << endl;
         cin.ignore(); 
         getline(cin, choice);
-        sheet* A = handler->get_sheet_by_name(choice);
-        if (A != NULL){
-          A->display_sheet();
+        try{
+          if (dict.isKey(stoi(choice)) == 1)
+          {
+            name = dict.getValue(stoi(choice));
+            sheet* A = handler->get_sheet_by_name(name);
+            if (A != NULL){
+              A->display_sheet();
+            }
+          }
+          else {
+            cout << "\n ERROR: Wrong Value." << endl;
+          }
         }
+        catch(...){
+          cout << "\n ERROR: Please enter a number." << endl;
+        }
+
       }
       cout << "Enter any number to continue..." << endl;
       int a;

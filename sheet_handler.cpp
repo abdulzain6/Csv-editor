@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 using namespace std;
 
@@ -9,8 +8,8 @@ public:
   int size = 0;
   sheet* head = NULL; 
   sheet* tail = NULL;
-  sheet_handler* next;
-  sheet_handler* prev;
+  sheet_handler* next = NULL;
+  sheet_handler* prev = NULL;
   void insert_sheet(sheet* temp){
     size++;
     if (head == NULL){
@@ -20,6 +19,8 @@ public:
       temp->previous = tail;
       tail->next = temp;
       tail = temp;
+    tail->next = NULL;
+
     }
   }
     void delete_sheet(string filename){
@@ -47,19 +48,22 @@ public:
         delete current;
     }
     }
-    int display_available_sheets(void){
+    dictionary<int, string> get_available_sheets(void){
+        dictionary<int , string> dict;
         if (size != 0){
             sheet* current = head;
             cout << "\nAvailable sheets: " << endl;
+            int i = 1;
             while(current != NULL){
-                cout << "* " <<current->filename <<endl;
+                cout << i <<". " <<current->filename <<endl;
+                dict.insert(i , current->filename);
                 current = current->next;
+                i++;
             }
-            return 1;
         }
         else 
             cout << "No available sheets" << endl;
-            return 0;
+            return dict;
     }
     sheet* get_sheet_by_name (string name){
         if (size != 0){

@@ -1,25 +1,29 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 using namespace std;
+
+
+template<typename A>
 class node{
     public:
-    int data;
-    node* next;
-    node* previous;
+    A data;
+    node<A>* next = NULL;
+    node<A>* previous = NULL;
 };
-class linked_list_int{
+
+template<typename A>
+class linked_list{
   public:
-    node* head;
-    node* tail;
+    node<A>* head;
+    node<A>* tail;
       int size = 0;
-        linked_list_int(){
+        linked_list(){
             head = NULL;
             tail = NULL;
         }
-        void insert (int data){
+        void insert (A data){
             size++;
-            node* temp = new node;
+            node<A>* temp = new node<A>;
             temp->data = data;
 
             if (head==NULL){
@@ -34,16 +38,16 @@ class linked_list_int{
             }
         }
         void display(){
-            node* temp = head;
+            node<A>* temp = head;
             while (temp!=NULL){
                 cout << temp->data << endl;
                 temp=temp->next;
             }
         }
-        int delete_from_start(){
+        A delete_from_start(){
           if(head != NULL) {
-            int data;
-            node* temp;
+            A data;
+            node<A>* temp;
             data = head -> data;
             temp = head;
             head = head->next;

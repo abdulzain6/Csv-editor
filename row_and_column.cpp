@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 using namespace std;
 
@@ -22,8 +21,8 @@ public:
   int size = 0;
   cell* head = NULL;
   cell* tail = NULL;
-  row* next;
-  row* prev;
+  row* next = NULL;
+  row* prev = NULL;
   void insert_cell(cell* temp){
     size++;
     if (head == NULL){
@@ -33,6 +32,7 @@ public:
       temp->prev = tail;
       tail->next = temp;
       tail = temp;
+      tail->next = NULL;
 
     }
   }
@@ -52,8 +52,9 @@ public:
   int size = 0;
   cell* head = NULL;
   cell* tail = NULL;
-  column* next;
-  column* prev;
+  column* next = NULL;
+  column* prev = NULL;
+  
   void insert_cell(cell* temp){
     size++;
     if (head == NULL){
@@ -63,6 +64,7 @@ public:
       temp->prev_col = tail;
       tail->next_col = temp;
       tail = temp;
+	  tail->next_col = NULL;
     }
   }
 

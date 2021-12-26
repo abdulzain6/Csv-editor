@@ -1,5 +1,6 @@
 #include "binary_tree.cpp"
-#include "linked_list_integer.cpp"
+#include "linked_list.cpp"
+#include "dictionary.cpp"
 #include "row_and_column.cpp"
 #include "sheet.cpp"
 #include "sheet_handler.cpp"

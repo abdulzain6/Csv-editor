@@ -1,14 +1,13 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 using namespace std;
 
 class sheet{
 public:
-  row* head;
-  row* tail;
-  column* col_head;
-  column* col_tail;
+  row* head = NULL;
+  row* tail = NULL;
+  column* col_head = NULL;
+  column* col_tail = NULL;
   sheet* next = NULL;
   sheet* previous = NULL;
   bool skip_first_row_for_column_names = true;
@@ -234,9 +233,9 @@ public:
   }
 
 
-  void display_multiple_rows_helper(linked_list_int rows){
-    linked_list_int* rows_ptr = &rows;
-    node* temp = rows_ptr->head;
+  void display_multiple_rows_helper(linked_list<int> rows){
+    linked_list<int>* rows_ptr = &rows;
+    node<int>* temp = rows_ptr->head;
     int i = -1;
     while (i < rows_ptr->size) {
       i++;
@@ -246,14 +245,14 @@ public:
   }
 
   void display_multiple_rows (string str){
-    linked_list_int list;
+    linked_list<int> list;
     list.insert_using_str(str);
     display_multiple_rows_helper(list);
   }
 
-  long double sum_multiple_columns_helper(linked_list_int columns){
-    linked_list_int* column_ptr = &columns;
-    node* temp = column_ptr->head;
+  long double sum_multiple_columns_helper(linked_list<int> columns){
+    linked_list<int>* column_ptr = &columns;
+    node<int>* temp = column_ptr->head;
     int i = 0 , sum = 0;
     while (i < column_ptr->size) {
       i++;
@@ -263,14 +262,14 @@ public:
     return sum;
   }
   long double sum_multiple_columns (string str){
-    linked_list_int* list = new linked_list_int;
+    linked_list<int>* list = new linked_list<int>;
     list->insert_using_str(str);
     return sum_multiple_columns_helper(*list);
   }
   long double avg_multiple_columns (string str) {
-    linked_list_int* list = new linked_list_int;
+    linked_list<int>* list = new linked_list<int>;
     list->insert_using_str(str);
-    node* temp = list->head;
+    node<int>* temp = list->head;
     long double sum_of_averages = 0;
     while (temp != NULL){
       sum_of_averages = sum_of_averages + calculate_column_average(temp->data);
