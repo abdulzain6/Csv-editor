@@ -10,7 +10,7 @@ class file_parser{
     sheet* open_file(string filename){
       ifstream file;
       file.open(filename);
-      sheet* sheet_var = new sheet();
+      sheet* sheet_var = new sheet(filename);
       if (file.is_open()) {
         string line;
         int line_number = 0;

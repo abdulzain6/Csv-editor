@@ -30,6 +30,7 @@ class linked_list_int{
                 temp->previous = tail;
                 tail->next = temp;
                 tail = temp;
+                tail->next = NULL;
             }
         }
         void display(){
@@ -54,6 +55,21 @@ class linked_list_int{
           else{
             return 0;
           }
-
         }
+          void insert_using_str (string str , string delimiter = ","){
+            int position = 0;
+            int data = 0;
+            try {
+              while ((position = str.find(delimiter)) != string::npos) {
+                data = stoi(str.substr(0, position));
+                insert(data);
+                str.erase(0, position + delimiter.length());
+              }
+              insert(stoi(str));
+            }
+            catch (...){
+                cout << " \n ERROR: Enter Numerical values only. \n";
+            }
+          }
+        
 };

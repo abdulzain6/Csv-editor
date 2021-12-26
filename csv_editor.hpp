@@ -2,5 +2,6 @@
 #include "linked_list_integer.cpp"
 #include "row_and_column.cpp"
 #include "sheet.cpp"
+#include "sheet_handler.cpp"
 #include "file_parser.cpp"
 #include "stack_str.cpp"

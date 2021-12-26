@@ -9,9 +9,13 @@ public:
   row* tail;
   column* col_head;
   column* col_tail;
+  sheet* next = NULL;
+  sheet* previous = NULL;
   bool skip_first_row_for_column_names = true;
   int total_rows = 0;
   int total_cols = 0;
+  string filename;
+  sheet(string filename) : filename(filename){}
   void set_skip_first_row_for_column_names (bool value){
     skip_first_row_for_column_names = value;
   }
@@ -24,6 +28,9 @@ public:
       temp->prev = tail;
       tail->next = temp;
       tail = temp;
+      
+      tail->next = NULL;
+
     }
   }
   void insert_column(column* temp){
@@ -35,6 +42,8 @@ public:
       temp->prev = col_tail;
       col_tail->next = temp;
       col_tail = temp;
+      col_tail->next = NULL;
+
     }
   }
   // TODO : Zaigham improve design.
@@ -191,7 +200,7 @@ public:
         while (cell_iterator != NULL){
           cell_counter++;
           if ((skip_first_row_for_column_names == true && cell_counter != 0)|| skip_first_row_for_column_names == false){
-            //stod is used to convert string to double.
+            //stold is used to convert string to long double.
             try{
               sum = sum + stold(cell_iterator->data);
             }
@@ -223,28 +232,51 @@ public:
       row_iterator = row_iterator->next;
     }
   }
+
+
   void display_multiple_rows_helper(linked_list_int rows){
     linked_list_int* rows_ptr = &rows;
     node* temp = rows_ptr->head;
-    int i = 0;
+    int i = -1;
     while (i < rows_ptr->size) {
       i++;
       display_row(temp->data);
       temp = temp->next;
     }
-    
   }
+
   void display_multiple_rows (string str){
-    string delimiter = ",";
-    int position = 0;
     linked_list_int list;
-    int data = 0;
-    while ((position = str.find(delimiter)) != string::npos) {
-      data = stoi(str.substr(0, position));
-      list.insert(data);
-      str.erase(0, position + delimiter.length());
-    }
-    list.insert(stoi(str));
+    list.insert_using_str(str);
     display_multiple_rows_helper(list);
+  }
+
+  long double sum_multiple_columns_helper(linked_list_int columns){
+    linked_list_int* column_ptr = &columns;
+    node* temp = column_ptr->head;
+    int i = 0 , sum = 0;
+    while (i < column_ptr->size) {
+      i++;
+      sum = sum + calculate_column_sum(temp->data);
+      temp = temp->next;
+    }
+    return sum;
+  }
+  long double sum_multiple_columns (string str){
+    linked_list_int* list = new linked_list_int;
+    list->insert_using_str(str);
+    return sum_multiple_columns_helper(*list);
+  }
+  long double avg_multiple_columns (string str) {
+    linked_list_int* list = new linked_list_int;
+    list->insert_using_str(str);
+    node* temp = list->head;
+    long double sum_of_averages = 0;
+    while (temp != NULL){
+      sum_of_averages = sum_of_averages + calculate_column_average(temp->data);
+      cout << temp->data << endl;
+      temp = temp->next;
+    }
+    return sum_of_averages / list->size;
   }
 };
